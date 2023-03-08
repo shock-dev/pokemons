@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { typeColors } from '../resourses/typeColors';
+import { typeColors } from '../resources/typeColors';
 
 interface PokemonTypesListProps {
   types: string[];

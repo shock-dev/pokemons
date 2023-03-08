@@ -13,7 +13,11 @@ import { pokemonSlice } from '../store/reducers/PokemonSlice';
 
 const limits = [10, 20, 50, 100];
 
-export const Pagination = () => {
+interface PaginationProps {
+  showLimit?: boolean;
+}
+
+export const Pagination = ({ showLimit = false }: PaginationProps) => {
   const dispatch = useAppDispatch();
   const { offset, limit, isLoading } = useAppSelector(
     state => state.pokemonReducer,
@@ -44,22 +48,24 @@ export const Pagination = () => {
       <Button variant="contained" onClick={onNextPage} disabled={isLoading}>
         Next
       </Button>
-      <FormControl size="small" disabled={isLoading}>
-        <InputLabel id="limit-label">Limit</InputLabel>
-        <Select
-          labelId="limit-label"
-          id="limit"
-          value={String(limit)}
-          label="Limit"
-          onChange={handleChange}
-        >
-          {limits.map(val => (
-            <MenuItem key={val} value={val}>
-              {val}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {showLimit && (
+        <FormControl size="small" disabled={isLoading}>
+          <InputLabel id="limit-label">Limit</InputLabel>
+          <Select
+            labelId="limit-label"
+            id="limit"
+            value={String(limit)}
+            label="Limit"
+            onChange={handleChange}
+          >
+            {limits.map(val => (
+              <MenuItem key={val} value={val}>
+                {val}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
     </Box>
   );
 };

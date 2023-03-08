@@ -9,8 +9,12 @@ import { pokemonSlice } from './store/reducers/PokemonSlice';
 import { fetchPokemons } from './store/reducers/ActionCreators';
 import { PokemonModalInfo } from './components/PokemonModalInfo';
 import { Pagination } from './components/Pagination';
-import { filterPokemonsByName } from './helpers/pokemon';
+import {
+  filterPokemonsByName,
+  filterPokemonsByTypeList,
+} from './helpers/pokemon';
 import { SkeletonCard } from './components/Skeleton';
+import { MultipleSelect } from './components/MultipleSelect';
 
 const cardGridSizes = {
   xs: 12,
@@ -21,9 +25,8 @@ const cardGridSizes = {
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const { pokemons, limit, offset, search, isLoading } = useAppSelector(
-    state => state.pokemonReducer,
-  );
+  const { pokemons, limit, offset, search, isLoading, activeTypes } =
+    useAppSelector(state => state.pokemonReducer);
   const { openPokemonsModal, setSearch } = pokemonSlice.actions;
 
   useEffect(() => {
@@ -38,38 +41,39 @@ export const App = () => {
     dispatch(setSearch(e.target.value));
   };
 
-  const filteredPokemons = filterPokemonsByName(pokemons, search);
+  const filteredByTags = filterPokemonsByTypeList(pokemons, activeTypes);
+  const filteredPokemons = filterPokemonsByName(filteredByTags, search);
 
   return (
     <>
       <Header />
       <Container>
-        <Box>
+        <Box sx={{ display: 'flex', gap: 1, marginTop: 2 }}>
           <TextField
             id="outlined-basic"
             label="Search"
             variant="outlined"
-            sx={{ marginTop: 2 }}
             value={search}
             onChange={searchHandler}
           />
-          <Pagination />
-          <Grid container spacing={2}>
-            {isLoading &&
-              new Array(20).fill(null).map((s, index) => (
-                <Grid key={index} item {...cardGridSizes}>
-                  <SkeletonCard />
-                </Grid>
-              ))}
-            {!isLoading &&
-              filteredPokemons.map((i, index) => (
-                <Grid key={index} item {...cardGridSizes}>
-                  <PokemonCard pokemon={i} onInfo={() => openInfo(i)} />
-                </Grid>
-              ))}
-          </Grid>
-          <Pagination />
+          <MultipleSelect />
         </Box>
+        <Pagination showLimit />
+        <Grid container spacing={2}>
+          {isLoading &&
+            new Array(20).fill(null).map((s, index) => (
+              <Grid key={index} item {...cardGridSizes}>
+                <SkeletonCard />
+              </Grid>
+            ))}
+          {!isLoading &&
+            filteredPokemons.map((i, index) => (
+              <Grid key={index} item {...cardGridSizes}>
+                <PokemonCard pokemon={i} onInfo={() => openInfo(i)} />
+              </Grid>
+            ))}
+        </Grid>
+        <Pagination />
       </Container>
       <PokemonModalInfo />
     </>

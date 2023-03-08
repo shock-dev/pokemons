@@ -11,6 +11,7 @@ interface PokemonState {
   limit: number;
   totalCount: number;
   search: string;
+  activeTypes: string[];
 }
 
 const initialState: PokemonState = {
@@ -23,6 +24,7 @@ const initialState: PokemonState = {
   limit: 20,
   totalCount: 0,
   search: '',
+  activeTypes: [],
 };
 
 export const pokemonSlice = createSlice({
@@ -54,6 +56,7 @@ export const pokemonSlice = createSlice({
     },
     nextPage(state) {
       state.offset += state.limit;
+      state.activeTypes = [];
     },
     prevPage(state) {
       if (state.offset - state.limit < 0) {
@@ -61,12 +64,17 @@ export const pokemonSlice = createSlice({
         return;
       }
       state.offset -= state.limit;
+      state.activeTypes = [];
     },
     setLimit(state, action: PayloadAction<number>) {
       state.limit = action.payload;
+      state.activeTypes = [];
     },
     setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
+    },
+    setActiveTypes(state, action: PayloadAction<string[]>) {
+      state.activeTypes = action.payload;
     },
   },
 });
