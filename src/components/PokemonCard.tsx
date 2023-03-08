@@ -27,7 +27,7 @@ export const PokemonCard = ({ pokemon, onInfo }: PokemonCardProps) => {
           sx={{ fontSize: 16, textTransform: 'capitalize', fontWeight: 'bold' }}
           gutterBottom
         >
-          {pokemon.name}
+          {pokemon.id}.{pokemon.name}
         </Typography>
         <PokemonTypesList types={getTypeNamesFromPokemon(pokemon)} />
       </CardContent>

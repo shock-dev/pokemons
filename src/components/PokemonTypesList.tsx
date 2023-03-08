@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { typeColors } from '../resources/typeColors';
 
 interface PokemonTypesListProps {
@@ -11,7 +11,7 @@ export const PokemonTypesList = ({ types = [] }: PokemonTypesListProps) => {
   }
 
   return (
-    <Box sx={{ display: 'flex', gap: '2px' }}>
+    <Stack direction="row" spacing={1}>
       {types.map(type => (
         <Box
           key={type}
@@ -24,6 +24,6 @@ export const PokemonTypesList = ({ types = [] }: PokemonTypesListProps) => {
           {type}
         </Box>
       ))}
-    </Box>
+    </Stack>
   );
 };
