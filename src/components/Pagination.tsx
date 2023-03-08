@@ -15,7 +15,9 @@ const limits = [10, 20, 50, 100];
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
-  const { offset, limit } = useAppSelector(state => state.pokemonReducer);
+  const { offset, limit, isLoading } = useAppSelector(
+    state => state.pokemonReducer,
+  );
   const { nextPage, prevPage, setLimit } = pokemonSlice.actions;
 
   const onNextPage = () => {
@@ -32,13 +34,17 @@ export const Pagination = () => {
 
   return (
     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }} my={2}>
-      <Button variant="contained" onClick={onPrevPage} disabled={offset === 0}>
+      <Button
+        variant="contained"
+        onClick={onPrevPage}
+        disabled={offset === 0 || isLoading}
+      >
         Prev
       </Button>
-      <Button variant="contained" onClick={onNextPage}>
+      <Button variant="contained" onClick={onNextPage} disabled={isLoading}>
         Next
       </Button>
-      <FormControl>
+      <FormControl size="small" disabled={isLoading}>
         <InputLabel id="limit-label">Limit</InputLabel>
         <Select
           labelId="limit-label"

@@ -10,6 +10,7 @@ import { fetchPokemons } from './store/reducers/ActionCreators';
 import { PokemonModalInfo } from './components/PokemonModalInfo';
 import { Pagination } from './components/Pagination';
 import { filterPokemonsByName } from './helpers/pokemon';
+import { SkeletonCard } from './components/Skeleton';
 
 const cardGridSizes = {
   xs: 12,
@@ -20,7 +21,7 @@ const cardGridSizes = {
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const { pokemons, limit, offset, search } = useAppSelector(
+  const { pokemons, limit, offset, search, isLoading } = useAppSelector(
     state => state.pokemonReducer,
   );
   const { openPokemonsModal, setSearch } = pokemonSlice.actions;
@@ -54,11 +55,18 @@ export const App = () => {
           />
           <Pagination />
           <Grid container spacing={2}>
-            {filteredPokemons.map((i, index) => (
-              <Grid key={index} item {...cardGridSizes}>
-                <PokemonCard pokemon={i} onInfo={() => openInfo(i)} />
-              </Grid>
-            ))}
+            {isLoading &&
+              new Array(20).fill(null).map((s, index) => (
+                <Grid key={index} item {...cardGridSizes}>
+                  <SkeletonCard />
+                </Grid>
+              ))}
+            {!isLoading &&
+              filteredPokemons.map((i, index) => (
+                <Grid key={index} item {...cardGridSizes}>
+                  <PokemonCard pokemon={i} onInfo={() => openInfo(i)} />
+                </Grid>
+              ))}
           </Grid>
           <Pagination />
         </Box>
