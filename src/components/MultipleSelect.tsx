@@ -29,7 +29,7 @@ const MenuProps = {
 
 export const MultipleSelect = () => {
   const dispatch = useAppDispatch();
-  const { pokemons, activeTypes, search } = useAppSelector(
+  const { pokemons, activeTypes, search, isLoading } = useAppSelector(
     state => state.pokemonReducer,
   );
   const { setActiveTypes } = pokemonSlice.actions;
@@ -46,27 +46,25 @@ export const MultipleSelect = () => {
   const filteredPokemons = filterPokemonsByName(pokemons, search);
 
   return (
-    <div>
-      <FormControl sx={{ width: 300 }}>
-        <InputLabel id="multiple-label">Types</InputLabel>
-        <Select
-          labelId="multiple-label"
-          id="multiple"
-          multiple
-          value={activeTypes}
-          onChange={handleChange}
-          input={<OutlinedInput label="Types" />}
-          renderValue={selected => selected.join(', ')}
-          MenuProps={MenuProps}
-        >
-          {getUniqTypeNamesFromPokemonList(filteredPokemons).map(name => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={activeTypes.indexOf(name) > -1} />
-              <ListItemText primary={name} sx={{ color: typeColors[name] }} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl disabled={isLoading} fullWidth>
+      <InputLabel id="multiple-label">Types</InputLabel>
+      <Select
+        labelId="multiple-label"
+        id="multiple"
+        multiple
+        value={activeTypes}
+        onChange={handleChange}
+        input={<OutlinedInput label="Types" />}
+        renderValue={selected => selected.join(', ')}
+        MenuProps={MenuProps}
+      >
+        {getUniqTypeNamesFromPokemonList(filteredPokemons).map(name => (
+          <MenuItem key={name} value={name}>
+            <Checkbox checked={activeTypes.indexOf(name) > -1} />
+            <ListItemText primary={name} sx={{ color: typeColors[name] }} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };

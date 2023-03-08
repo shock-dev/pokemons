@@ -13,6 +13,7 @@ export const getUniqTypeNamesFromPokemonList = (pokemons: Pokemon[]) => {
 };
 
 export const filterPokemonsByName = (pokemons: Pokemon[], search: string) => {
+  if (!search) return pokemons;
   return pokemons.filter(p => p.name.indexOf(search.toLowerCase()) !== -1);
 };
 
@@ -25,4 +26,15 @@ export const filterPokemonsByTypeList = (
   return pokemons.filter(p =>
     getTypeNamesFromPokemon(p).some(i => types.indexOf(i) !== -1),
   );
+};
+
+export const filterPokemons = (
+  pokemons: Pokemon[],
+  search: string,
+  activeTypes: string[],
+) => {
+  let filteredPokemons = pokemons;
+  filteredPokemons = filterPokemonsByTypeList(filteredPokemons, activeTypes);
+  filteredPokemons = filterPokemonsByName(filteredPokemons, search);
+  return filteredPokemons;
 };

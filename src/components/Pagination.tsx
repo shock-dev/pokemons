@@ -1,13 +1,12 @@
 import {
-  Box,
   Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
 } from '@mui/material';
-import * as React from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { pokemonSlice } from '../store/reducers/PokemonSlice';
 
@@ -36,12 +35,14 @@ export const Pagination = ({ showLimit = false }: PaginationProps) => {
     dispatch(setLimit(+event.target.value));
   };
 
+  const isDisabledPrev = offset === 0 || isLoading;
+
   return (
-    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }} my={2}>
+    <Stack direction="row" justifyContent="center" spacing={2} my={2}>
       <Button
         variant="contained"
         onClick={onPrevPage}
-        disabled={offset === 0 || isLoading}
+        disabled={isDisabledPrev}
       >
         Prev
       </Button>
@@ -66,6 +67,6 @@ export const Pagination = ({ showLimit = false }: PaginationProps) => {
           </Select>
         </FormControl>
       )}
-    </Box>
+    </Stack>
   );
 };
