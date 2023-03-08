@@ -30,8 +30,6 @@ export const PokemonModalInfo = () => {
     dispatch(closePokemonsModal());
   };
 
-  console.log(modalContent);
-
   if (!modalContent) {
     return null;
   }
