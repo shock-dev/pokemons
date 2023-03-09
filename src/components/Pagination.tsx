@@ -10,7 +10,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { pokemonSlice } from '../store/reducers/PokemonSlice';
 
-const limits = [10, 20, 50, 100];
+const limits = [10, 20, 50];
 
 interface PaginationProps {
   showLimit?: boolean;
@@ -18,35 +18,39 @@ interface PaginationProps {
 
 export const Pagination = ({ showLimit = false }: PaginationProps) => {
   const dispatch = useAppDispatch();
-  const { offset, limit, isLoading } = useAppSelector(
+  const { offset, limit, isLoading, totalCount } = useAppSelector(
     state => state.pokemonReducer,
   );
   const { nextPage, prevPage, setLimit } = pokemonSlice.actions;
-
-  const onNextPage = () => {
-    dispatch(nextPage());
-  };
+  const isPrevDisabled = offset === 0 || isLoading;
+  const isNextDisabled = offset - limit >= totalCount || isLoading;
 
   const onPrevPage = () => {
-    dispatch(prevPage());
+    if (!isPrevDisabled) dispatch(prevPage());
+  };
+
+  const onNextPage = () => {
+    if (!isNextDisabled) dispatch(nextPage());
   };
 
   const handleChange = (event: SelectChangeEvent) => {
     dispatch(setLimit(+event.target.value));
   };
 
-  const isDisabledPrev = offset === 0 || isLoading;
-
   return (
     <Stack direction="row" justifyContent="center" spacing={2} my={2}>
       <Button
         variant="contained"
         onClick={onPrevPage}
-        disabled={isDisabledPrev}
+        disabled={isPrevDisabled}
       >
         Prev
       </Button>
-      <Button variant="contained" onClick={onNextPage} disabled={isLoading}>
+      <Button
+        variant="contained"
+        onClick={onNextPage}
+        disabled={isNextDisabled}
+      >
         Next
       </Button>
       {showLimit && (

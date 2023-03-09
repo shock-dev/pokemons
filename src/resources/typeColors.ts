@@ -1,23 +1,3 @@
-export type PokemonTypeNames =
-  | 'normal'
-  | 'fire'
-  | 'water'
-  | 'electric'
-  | 'grass'
-  | 'ice'
-  | 'fighting'
-  | 'poison'
-  | 'ground'
-  | 'flying'
-  | 'psychic'
-  | 'bug'
-  | 'rock'
-  | 'ghost'
-  | 'dragon'
-  | 'dark'
-  | 'steel'
-  | 'fairy';
-
 export const typeColors: { [k: string]: string } = {
   normal: '#A8A77A',
   fire: '#EE8130',

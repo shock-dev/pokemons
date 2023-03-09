@@ -10,6 +10,7 @@ import { SkeletonList } from './components/SkeletonList';
 import { PokemonList } from './components/PokemonList';
 import { ErrorBox } from './components/ErrorBox';
 import { FilterPanel } from './components/FilterPanel';
+import { EmptyBox } from './components/EmptyBox';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ export const App = () => {
           <Grid container spacing={2}>
             {isLoading && <SkeletonList count={limit} />}
             {!isLoading && error && <ErrorBox message={error} />}
+            {!isLoading && !error && !filteredPokemons.length && <EmptyBox />}
             {!isLoading && !error && filteredPokemons.length > 0 && (
               <PokemonList pokemons={filteredPokemons} />
             )}
